@@ -47,3 +47,22 @@ if __name__ == '__main__':
         test_correct += torch.sum(id == lables.data)
     print()
     print('test correct:%.03f%%' % (100 * test_correct / len(data_test)))
+
+    w = model.conv1.weight.data.clone()
+    print(type(w))
+    print(w)
+    print(w / 2)
+
+    model.conv1.weight.data = torch.zeros_like(w)
+    print(model.conv1.weight.data)
+
+
+    test_correct = 0
+    for data in test_loader:
+        inputs, lables = data
+        inputs, lables = Variable(inputs).cuda(), Variable(lables).cuda()
+        outputs = model(inputs)
+        _, id = torch.max(outputs.data, 1)
+        test_correct += torch.sum(id == lables.data)
+    print()
+    print('test correct:%.03f%%' % (100 * test_correct / len(data_test)))
