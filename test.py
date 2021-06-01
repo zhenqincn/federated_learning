@@ -23,28 +23,28 @@ if __name__ == '__main__':
         sum_loss = 0.0
         train_correct = 0
         for data in train_loader:
-            inputs, lables = data
-            inputs, lables = Variable(inputs).cuda(), Variable(lables).cuda()
+            inputs, labels = data
+            inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             optimizer.zero_grad()
             outputs = model(inputs)
-            loss = cost(outputs, lables)
+            loss = cost(outputs, labels)
             loss.backward()
             optimizer.step()
 
             _, id = torch.max(outputs.data, 1)
             sum_loss += loss.data
-            train_correct += torch.sum(id == lables.data)
+            train_correct += torch.sum(id == labels.data)
 
         print('[%d,%d] loss:%.03f' % (epoch + 1, epochs, sum_loss / len(train_loader)))
         print('        correct:%.03f%%' % (100 * train_correct / len(data_train)))
 
     test_correct = 0
     for data in test_loader:
-        inputs, lables = data
-        inputs, lables = Variable(inputs).cuda(), Variable(lables).cuda()
+        inputs, labels = data
+        inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
         outputs = model(inputs)
         _, id = torch.max(outputs.data, 1)
-        test_correct += torch.sum(id == lables.data)
+        test_correct += torch.sum(id == labels.data)
     print()
     print('test correct:%.03f%%' % (100 * test_correct / len(data_test)))
 
@@ -58,10 +58,10 @@ if __name__ == '__main__':
 
     test_correct = 0
     for data in test_loader:
-        inputs, lables = data
-        inputs, lables = Variable(inputs).cuda(), Variable(lables).cuda()
+        inputs, labels = data
+        inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
         outputs = model(inputs)
         _, id = torch.max(outputs.data, 1)
-        test_correct += torch.sum(id == lables.data)
+        test_correct += torch.sum(id == labels.data)
     print()
     print('test correct:%.03f%%' % (100 * test_correct / len(data_test)))
