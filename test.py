@@ -51,9 +51,8 @@ if __name__ == '__main__':
     w = model.conv1.weight.data.clone()
     print(type(w))
     print(w)
-    print(w / 2)
 
-    model.conv1.weight.data = torch.zeros_like(w)
+    model.conv1.weight.data += torch.ones_like(w)
     print(model.conv1.weight.data)
 
 
