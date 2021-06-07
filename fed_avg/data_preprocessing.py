@@ -1,9 +1,10 @@
 import numpy as np
 import struct
 import matplotlib.pyplot as plt
+import os
 
 
-def load_images(file_name):
+def load_mnist_images(file_name):
     ##   在读取或写入一个文件之前，你必须使用 Python 内置open()函数来打开它。##
     ##   file object = open(file_name [, access_mode][, buffering])          ##
     ##   file_name是包含您要访问的文件名的字符串值。                         ##
@@ -26,7 +27,7 @@ def load_images(file_name):
     return images
 
 
-def load_labels(file_name):
+def load_mnist_labels(file_name):
     ##   打开文件
     binfile = open(file_name, 'rb')
     ##   从一个打开的文件读取数据    
@@ -40,6 +41,20 @@ def load_labels(file_name):
     ##   转换为一维数组
     labels = np.reshape(labels, [num])
     return labels 
+
+
+def load_all_data(file_path='./dataset/MNIST/'):
+    filename_train_images = os.path.join(file_path, 'raw/train-images-idx3-ubyte')
+    filename_train_labels = os.path.join(file_path, 'raw/train-labels-idx1-ubyte') 
+    filename_test_images = os.path.join(file_path, 'raw/t10k-images-idx3-ubyte')
+    filename_test_labels = os.path.join(file_path, 'raw/t10k-labels-idx1-ubyte')
+    train_images=load_mnist_images(filename_train_images)
+    train_labels=load_mnist_labels(filename_train_labels)
+    test_images=load_mnist_images(filename_test_images)
+    test_labels=load_mnist_labels(filename_test_labels)
+
+    return train_images, train_labels, test_images, test_labels
+
 
 
 def get_split_data(dataset_dir='./dataset/MNIST/', split_num=100):
@@ -57,10 +72,10 @@ if __name__ == '__main__':
     filename_train_labels = './dataset/MNIST/raw/train-labels-idx1-ubyte'
     filename_test_images = './dataset/MNIST/raw/t10k-images-idx3-ubyte'
     filename_test_labels = './dataset/MNIST/raw/t10k-labels-idx1-ubyte'
-    train_images=load_images(filename_train_images)
-    train_labels=load_labels(filename_train_labels)
-    test_images=load_images(filename_test_images)
-    test_labels=load_labels(filename_test_labels)
+    train_images=load_mnist_images(filename_train_images)
+    train_labels=load_mnist_labels(filename_train_labels)
+    test_images=load_mnist_images(filename_test_images)
+    test_labels=load_mnist_labels(filename_test_labels)
 
     # fig, ax = plt.subplots(
     # nrows=2,
