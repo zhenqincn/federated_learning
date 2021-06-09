@@ -1,5 +1,5 @@
 import torch
-from models.models import TwoLayerCNN
+from models.TwoLayerCNN import TwoLayerCNN
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
