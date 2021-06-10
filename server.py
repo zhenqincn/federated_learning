@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 
 
 class Server:
@@ -30,6 +31,19 @@ class Server:
         聚合模型
         :return:
         """
-        for idx_client in selected_client_ids:
-            for k in self.global_model.state_dict().keys():
-                pass
+        data_total = sum([self.client_list[idx_client].get_train_data_size() for idx_client in selected_client_ids])
+
+        tmp_global_dict = self.global_model.state_dict()
+        for k in self.global_model.state_dict().keys():
+            tmp_global_dict[k] = torch.stack(
+                [self.client_list[idx_client].model.stat_dict()[k] * self.client_list[
+                    idx_client].get_train_data_size() / data_total for idx_client in selected_client_ids])
+        self.global_model.load_state_dict(tmp_global_dict)
+
+    def evaluate_all(self):
+        sum_correct, sum_total = 0, 0
+        for client in self.client_list:
+            correct, total = client.eval()
+            sum_correct += correct
+            sum_total += total
+        return sum_correct, sum_total
