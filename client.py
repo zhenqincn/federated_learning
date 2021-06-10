@@ -1,6 +1,5 @@
 import torch
 
-from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
 
@@ -49,8 +48,8 @@ class Client:
             inputs, labels = data
             inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
             outputs = self.model(inputs)
-            _, id = torch.max(outputs.data, 1)
-            eval_correct += torch.sum(id == labels.data)
+            _, idx = torch.max(outputs.data, 1)
+            eval_correct += torch.sum(idx == labels.data)
         return eval_correct, len(self.eval_data)
 
     def get_train_data_size(self):
