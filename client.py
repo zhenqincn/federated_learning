@@ -5,8 +5,8 @@ from torch.autograd import Variable
 
 class Client:
 
-    def __init__(self, client_id, group_id, train_data={'x': [], 'y': []}, eval_data={'x': [], 'y': []}, local_epoch=5,
-                 model=None, cost=None, optimizer=None):
+    def __init__(self, client_id, group_id, train_data, eval_data, local_epoch=5, model=None, cost=None,
+                 optimizer=None):
         self.client_id = client_id
         self.group_id = group_id
         self.train_data = train_data
@@ -14,7 +14,8 @@ class Client:
         self.local_epoch = local_epoch
         self.model = model
         self.cost = cost
-        self.optimizer = optimizer
+
+        self.optimizer = torch.optim.Adam(self.model.parameters())
 
     def train(self):
         for epoch in range(self.local_epoch):

@@ -1,8 +1,9 @@
 import torch
-from models.TwoLayerCNN import TwoLayerCNN
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
 from torch.autograd import Variable
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
+
+from models.TwoLayerCNN import TwoLayerCNN
 
 if __name__ == '__main__':
     data_train = datasets.MNIST(root="./dataset/", transform=transforms.ToTensor(), train=True, download=False)
@@ -30,9 +31,9 @@ if __name__ == '__main__':
             loss.backward()
             optimizer.step()
 
-            _, id = torch.max(outputs.data, 1)
+            _, idx = torch.max(outputs.data, 1)
             sum_loss += loss.data
-            train_correct += torch.sum(id == labels.data)
+            train_correct += torch.sum(idx == labels.data)
 
         print('[%d,%d] loss:%.03f' % (epoch + 1, epochs, sum_loss / len(train_loader)))
         print('        correct:%.03f%%' % (100 * train_correct / len(data_train)))
