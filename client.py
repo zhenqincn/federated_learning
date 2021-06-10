@@ -31,9 +31,9 @@ class Client:
                 loss.backward()
                 self.optimizer.step()
 
-                _, id = torch.max(outputs.data, 1)
+                _, idx = torch.max(outputs.data, 1)
                 sum_loss += loss.data
-                train_correct += torch.sum(id == labels.data)
+                train_correct += torch.sum(idx == labels.data)
 
             print('[%d,%d] loss:%.03f' % (epoch + 1, self.local_epoch, sum_loss / len(self.train_data)))
             print('        correct:%.03f%%' % (100 * train_correct / len(self.train_data)))
