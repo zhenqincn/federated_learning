@@ -4,7 +4,6 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
-
 if __name__ == '__main__':
     data_train = datasets.MNIST(root="./dataset/", transform=transforms.ToTensor(), train=True, download=False)
     data_test = datasets.MNIST(root="./dataset/", transform=transforms.ToTensor(), train=False, download=False)
@@ -17,8 +16,8 @@ if __name__ == '__main__':
     cost = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters())
 
-    epochs = 5
-    for epoch in range(epochs) :
+    epochs = 1
+    for epoch in range(epochs):
         # train
         sum_loss = 0.0
         train_correct = 0
@@ -43,18 +42,25 @@ if __name__ == '__main__':
         inputs, labels = data
         inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
         outputs = model(inputs)
-        _, id = torch.max(outputs.data, 1)
-        test_correct += torch.sum(id == labels.data)
+        _, idx = torch.max(outputs.data, 1)
+        test_correct += torch.sum(idx == labels.data)
     print()
     print('test correct:%.03f%%' % (100 * test_correct / len(data_test)))
 
-    w = model.conv1.weight.data.clone()
-    print(type(w))
-    print(w)
+    print(model.state_dict().keys())
+    for k, v in model.state_dict().items():
+        print(k, v)
 
-    model.conv1.weight.data += torch.ones_like(w)
-    print(model.conv1.weight.data)
+    # for item in model.parameters():
+    #     item.data = torch.zeros_like(item)
+    #     print(type(item))
 
+    # w = model.conv1.weight.data.clone()
+    # print(type(w))
+    # print(w)
+
+    # model.conv1.weight.data += torch.ones_like(w)
+    # print(model.conv1.weight.data)
 
     test_correct = 0
     for data in test_loader:

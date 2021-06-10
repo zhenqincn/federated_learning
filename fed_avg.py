@@ -4,6 +4,8 @@ import os
 from data_provision import load_mnist_data
 import numpy as np
 import matplotlib.pyplot as plt
+from server import Server
+from client import Client
 
 
 if __name__ == '__main__':

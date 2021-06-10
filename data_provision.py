@@ -65,13 +65,13 @@ def load_mnist_data(file_path='./dataset/MNIST/', if_sort=False):
 
 
 
-def get_split_data(dataset_dir='./dataset/MNIST/', split_num=100):
-    filename_train_images = './dataset/MNIST/raw/train-images-idx3-ubyte'
-    filename_train_labels = './dataset/MNIST/raw/train-labels-idx1-ubyte'
-    filename_test_images = './dataset/MNIST/raw/t10k-images-idx3-ubyte'
-    filename_test_labels = './dataset/MNIST/raw/t10k-labels-idx1-ubyte'
+# def get_split_data(dataset_dir='./dataset/MNIST/', split_num=100):
+#     filename_train_images = './dataset/MNIST/raw/train-images-idx3-ubyte'
+#     filename_train_labels = './dataset/MNIST/raw/train-labels-idx1-ubyte'
+#     filename_test_images = './dataset/MNIST/raw/t10k-images-idx3-ubyte'
+#     filename_test_labels = './dataset/MNIST/raw/t10k-labels-idx1-ubyte'
     
-    split_train_images, split_train_labels, split_test_images, split_test_labels = [], [], [], []
+#     split_train_images, split_train_labels, split_test_images, split_test_labels = [], [], [], []
     
 
 
