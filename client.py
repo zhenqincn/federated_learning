@@ -25,7 +25,7 @@ class Client:
             self._eval_data_length += len(inputs)
             
 
-    def train(self):
+    def train(self, verbose=False):
         for epoch in range(self.local_epoch):
             # train
             sum_loss = 0.0
@@ -42,11 +42,12 @@ class Client:
                 _, idx = torch.max(outputs.data, 1)
                 sum_loss += loss.data
                 train_correct += torch.sum(idx == labels.data)
+            if verbose:
+                print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length, 100 * train_correct / self._train_data_length))
+        if verbose:
+            print()
 
-            print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length, 100 * train_correct / self._train_data_length))
-        print()
-
-    def eval(self):
+    def eval(self, verbose=False):
         """
         :return:
             eval_correct: 评估正确的item个数
@@ -59,8 +60,9 @@ class Client:
             outputs = self.model(inputs)
             _, idx = torch.max(outputs.data, 1)
             eval_correct += torch.sum(idx == labels.data)
-        print('client %d: eval correct:%.03f%%' % (self.client_id, 100 * eval_correct / self._eval_data_length))
-        print()
+        if verbose:
+            print('client %d: eval correct:%.03f%%' % (self.client_id, 100 * eval_correct / self._eval_data_length))
+            print()
         return eval_correct, self._eval_data_length
 
     def get_train_data_size(self):

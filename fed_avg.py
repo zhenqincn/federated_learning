@@ -10,7 +10,7 @@ from torchvision import datasets, transforms
 
 
 if __name__ == '__main__':
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(0)
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(1)
     device = torch.device('cuda')
     # model = TwoLayerCNN().to(devic
     #
@@ -44,6 +44,6 @@ if __name__ == '__main__':
         server.dispatch_model()
     server.evaluate_all()
 
-    client = server.client_list[0]
-    client.model.load_state_dict(server.global_model.state_dict())
-    client.eval()
+    # client = server.client_list[0]
+    # client.model.load_state_dict(server.global_model.state_dict())
+    # client.eval()
