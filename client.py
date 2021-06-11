@@ -17,6 +17,14 @@ class Client:
 
         self.optimizer = torch.optim.Adam(self.model.parameters())
 
+        self._train_data_length = 0
+        self._eval_data_length = 0
+        for inputs, _ in self.train_data:
+            self._train_data_length += len(inputs)
+        for inputs, _ in self.eval_data:
+            self._eval_data_length += len(inputs)
+            
+
     def train(self):
         for epoch in range(self.local_epoch):
             # train
@@ -35,8 +43,7 @@ class Client:
                 sum_loss += loss.data
                 train_correct += torch.sum(idx == labels.data)
 
-            print('[%d,%d] loss:%.03f' % (epoch + 1, self.local_epoch, sum_loss / len(self.train_data)))
-            print('        correct:%.03f%%' % (100 * train_correct / len(self.train_data)))
+            print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length, 100 * train_correct / self._train_data_length))
 
     def eval(self):
         """
@@ -51,7 +58,10 @@ class Client:
             outputs = self.model(inputs)
             _, idx = torch.max(outputs.data, 1)
             eval_correct += torch.sum(idx == labels.data)
-        return eval_correct, len(self.eval_data)
+        return eval_correct, self._eval_data_length
 
     def get_train_data_size(self):
-        return len(self.train_data)
+        return self._train_data_length
+
+    def get_eval_data_size(self):
+        return self._eval_data_length
