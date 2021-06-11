@@ -6,6 +6,7 @@ class Server:
     def __init__(self, global_model):
         self.global_model = global_model
         self.client_list = []
+        self.selected_client_ids = []
 
     def add_client(self, client):
         self.client_list.append(client)
@@ -18,32 +19,38 @@ class Server:
         :return:
         """
         n_samples = max(n_samples, 1)
-        selected_client_ids = []
+        self.selected_client_ids = []
 
         if strategy == 'random':
-            selected_client_ids.extend(np.random.choice(range(len(self.client_list)), size=n_samples, replace=False))
+            self.selected_client_ids.extend(np.random.choice(range(len(self.client_list)), size=n_samples, replace=False))
 
-        for idx_client in selected_client_ids:
+        for idx_client in self.selected_client_ids:
             self.client_list[idx_client].train()
 
-    def aggregate_model(self, selected_client_ids):
+    def aggregate_model(self):
         """
         聚合模型
         :return:
         """
-        data_total = sum([self.client_list[idx_client].get_train_data_size() for idx_client in selected_client_ids])
+        data_total = sum([self.client_list[idx_client].get_train_data_size() for idx_client in self.selected_client_ids])
 
         tmp_global_dict = self.global_model.state_dict()
         for k in self.global_model.state_dict().keys():
             tmp_global_dict[k] = torch.stack(
-                [self.client_list[idx_client].model.stat_dict()[k] * self.client_list[
-                    idx_client].get_train_data_size() / data_total for idx_client in selected_client_ids])
+                [self.client_list[idx_client].model.state_dict()[k].float() * self.client_list[
+                    idx_client].get_train_data_size() / data_total for idx_client in self.selected_client_ids], 0).sum(0)
         self.global_model.load_state_dict(tmp_global_dict)
-
+    
+    def dispatch_model(self):
+        global_dict = self.global_model.state_dict()
+        for client in self.client_list:
+            client.model.load_state_dict(global_dict)
+            
     def evaluate_all(self):
         sum_correct, sum_total = 0, 0
         for client in self.client_list:
             correct, total = client.eval()
             sum_correct += correct
             sum_total += total
+        
         return sum_correct, sum_total

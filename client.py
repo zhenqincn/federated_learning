@@ -59,6 +59,8 @@ class Client:
             outputs = self.model(inputs)
             _, idx = torch.max(outputs.data, 1)
             eval_correct += torch.sum(idx == labels.data)
+        print('client %d: eval correct:%.03f%%' % (self.client_id, 100 * eval_correct / self._eval_data_length))
+        print()
         return eval_correct, self._eval_data_length
 
     def get_train_data_size(self):
