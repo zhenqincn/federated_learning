@@ -17,7 +17,7 @@ class Server:
         :param strategy:
         :return:
         """
-        n_samples = max(n_samples, len(self.client_list))
+        n_samples = max(n_samples, 1)
         selected_client_ids = []
 
         if strategy == 'random':

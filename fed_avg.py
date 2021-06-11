@@ -36,4 +36,5 @@ if __name__ == '__main__':
         client = Client(idx, None, tmp_train_loader, tmp_test_loader, local_epoch=5, model=TwoLayerCNN().to(device),
                         cost=torch.nn.CrossEntropyLoss(), optimizer='adam')
         server.add_client(client)
-    server.client_list[0].train()
+    
+    server.train(10)

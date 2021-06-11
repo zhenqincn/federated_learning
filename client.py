@@ -44,6 +44,7 @@ class Client:
                 train_correct += torch.sum(idx == labels.data)
 
             print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length, 100 * train_correct / self._train_data_length))
+        print()
 
     def eval(self):
         """
