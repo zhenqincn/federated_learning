@@ -41,13 +41,14 @@ class Server:
                     idx_client].get_train_data_size() / data_total for idx_client in self.selected_client_ids], 0).sum(0)
         self.global_model.load_state_dict(tmp_global_dict)
     
-    def dispatch_model(self):
+    def dispatch_model(self, strategy='all'):
         global_dict = self.global_model.state_dict()
-        for client in self.client_list:
-            client.model.load_state_dict(global_dict)
+        if strategy == 'all':
+            for client in self.client_list:
+                client.model.load_state_dict(global_dict)
             
     def evaluate_all(self, verbose=False):
-        sum_correct, sum_total = 0, 0
+        sum_correct, sum_total = 0.0, 0.0
         for client in self.client_list:
             correct, total = client.eval(verbose=verbose)
             sum_correct += correct
