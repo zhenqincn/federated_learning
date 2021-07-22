@@ -3,7 +3,7 @@ from torch.utils.data import DataLoader
 import os
 
 from client import Client
-from data_provider import load_mnist_data, MyDataset
+from data_provider import MyDataset
 from models.TwoLayerCNN import TwoLayerCNN
 from server import Server
 from torchvision import datasets, transforms
