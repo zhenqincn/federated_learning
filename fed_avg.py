@@ -10,7 +10,8 @@ from torchvision import datasets, transforms
 
 
 if __name__ == '__main__':
-    os.environ['CUDA_VISIBLE_DEVICES'] = str(1)
+    # print(torch.cuda.device_count())
+    # os.environ['CUDA_VISIBLE_DEVICES'] = str(1)
     device = torch.device('cuda')
     # model = TwoLayerCNN().to(devic
     #
@@ -30,6 +31,7 @@ if __name__ == '__main__':
     train_set_list = [item for item in train_loader]
     eval_set_list = [item for item in eval_loader]
 
+    # model initialization
     for idx in range(len(train_set_list)):
         tmp_train_set = MyDataset(train_set_list[idx][0], train_set_list[idx][1])
         tmp_eval_set = MyDataset(eval_set_list[idx][0], eval_set_list[idx][1])
@@ -38,8 +40,10 @@ if __name__ == '__main__':
         client = Client(idx, None, tmp_train_loader, tmp_test_loader, local_epoch=5, model=TwoLayerCNN().to(device),
                         cost=torch.nn.CrossEntropyLoss(), optimizer='adam')
         server.add_client(client)
+    
+    # model training and aggregation
     for _ in range(10):
-        server.train(10)
+        server.train(10, verbose=True)
         server.aggregate_model()
         server.dispatch_model()
     server.evaluate_all()

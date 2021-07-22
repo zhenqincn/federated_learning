@@ -25,7 +25,7 @@ class Server:
             self.selected_client_ids.extend(np.random.choice(range(len(self.client_list)), size=n_samples, replace=False))
 
         for idx_client in self.selected_client_ids:
-            self.client_list[idx_client].train(verbose=False)
+            self.client_list[idx_client].train(verbose=verbose)
 
     def aggregate_model(self):
         """
