@@ -8,11 +8,11 @@ from models.TwoLayerCNN import TwoLayerCNN
 from server import Server
 from torchvision import datasets, transforms
 
-
 if __name__ == '__main__':
     # print(torch.cuda.device_count())
     # os.environ['CUDA_VISIBLE_DEVICES'] = str(1)
     device = torch.device('cuda')
+    # print(torch.cuda.get_device_name(torch.cuda.current_device()))
     # model = TwoLayerCNN().to(devic
     #
     # e)
@@ -40,10 +40,10 @@ if __name__ == '__main__':
         client = Client(idx, None, tmp_train_loader, tmp_test_loader, local_epoch=5, model=TwoLayerCNN().to(device),
                         cost=torch.nn.CrossEntropyLoss(), optimizer='adam')
         server.add_client(client)
-    
+
     # model training and aggregation
     for _ in range(10):
-        server.train(10, verbose=True)
+        server.train(5, verbose=True)
         server.aggregate_model()
         server.dispatch_model()
     server.evaluate_all()

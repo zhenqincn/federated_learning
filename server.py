@@ -53,5 +53,5 @@ class Server:
             correct, total = client.eval(verbose=verbose)
             sum_correct += correct
             sum_total += total
-        print('evaluate all: correct:%.03f%%' % (sum_total * 100 / sum_total))
+        print('evaluate all: correct:%.03f%%' % (sum_correct * 100 / sum_total))
         return sum_correct, sum_total
