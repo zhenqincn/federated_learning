@@ -55,3 +55,4 @@ class Server:
             sum_total += total
         print('evaluate all: correct:%.03f%%' % (sum_correct * 100 / sum_total))
         return sum_correct, sum_total
+
