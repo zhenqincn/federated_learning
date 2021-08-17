@@ -23,7 +23,6 @@ class Client:
             self._train_data_length += len(inputs)
         for inputs, _ in self.eval_data:
             self._eval_data_length += len(inputs)
-            
 
     def train(self, verbose=False):
         for epoch in range(self.local_epoch):
@@ -43,7 +42,9 @@ class Client:
                 sum_loss += loss.data
                 train_correct += torch.sum(idx == labels.data)
             if verbose:
-                print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length, 100 * train_correct / self._train_data_length))
+                print('client %d: [%d/%d] loss:%.03f    correct:%.03f%%' % (
+                    self.client_id, epoch + 1, self.local_epoch, sum_loss / self._train_data_length,
+                    100 * train_correct / self._train_data_length))
         if verbose:
             print()
 
