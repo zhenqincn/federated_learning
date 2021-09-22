@@ -13,9 +13,7 @@ if __name__ == '__main__':
     # os.environ['CUDA_VISIBLE_DEVICES'] = str(1)
     device = torch.device('cuda')
     # print(torch.cuda.get_device_name(torch.cuda.current_device()))
-    # model = TwoLayerCNN().to(devic
-    #
-    # e)
+    # model = TwoLayerCNN().to(device)
     # train_data, train_label, eval_data, eval_label = load_mnist_data(if_sort=True)
     #
     # train_set = MyDataset(train_data, train_label)
