@@ -31,7 +31,7 @@ class Client:
             train_correct = 0
             for data in self.train_data:
                 inputs, labels = data
-                inputs, labels = Variable(inputs).cuda(), Variable(labels).cuda()
+                inputs, labels = inputs.cuda(), labels.cuda()
                 self.optimizer.zero_grad()
                 outputs = self.model(inputs)
                 loss = self.cost(outputs, labels)
